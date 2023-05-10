@@ -1,0 +1,87 @@
+---
+import Footer from "../components/Footer.astro";
+import NavigationBar from "../components/NavigationBar.astro";
+
+import "../styles/global.css";
+
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    {/* Add a new meta description tag */}
+    <meta name="description" content="Frau Katarina's website" />
+    <title>{title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script is:inline>
+      /** Represent the local storage property key by a variable */
+      const COLOUR_MODE = "COLOUR_MODE";
+
+      /** Represent the local storage property values by variables */
+      const LIGHT_THEME = "LIGHT";
+      const DARK_THEME = "DARK";
+
+      /** Represent the toggle theme class by a variable */
+      const DARK_THEME_CLASS = "dark";
+
+      /** Grab the document root element. In this case <html>  */
+      const rootEl = document.documentElement;
+
+      const getInitialColourMode = () => {
+        /** Get colour mode from local storage **/
+        const previouslySavedColourMode =
+          window.localStorage.getItem(COLOUR_MODE);
+
+        if (previouslySavedColourMode) {
+          return previouslySavedColourMode;
+        }
+
+        /** Does the user prefer dark mode e.g., through an operating system setting or a user agent setting. */
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return DARK_THEME;
+        }
+
+        /** Default to light theme */
+        return LIGHT_THEME;
+      };
+
+      /**Get initial colour mode */
+      const initialColourMode = getInitialColourMode();
+
+      const setInitialColourMode = (mode) => {
+        if (mode === LIGHT_THEME) {
+          rootEl.classList.remove(DARK_THEME_CLASS);
+        } else {
+          rootEl.classList.add(DARK_THEME_CLASS);
+        }
+      };
+
+      /** Set initial colour mode as soon as the script is executed */
+      setInitialColourMode(initialColourMode);
+    </script>
+  </head>
+  <body>
+    <main>
+      <NavigationBar />
+
+      <slot />
+
+      <Footer />
+    </main>
+  </body>
+</html>

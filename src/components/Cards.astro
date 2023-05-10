@@ -1,0 +1,33 @@
+---
+// Import the Card component
+import Card from "./Card.astro";
+// Import the Card Props type
+import type { Props as CardProp } from "./Card.astro";
+
+// defined the Props for this component
+type Props = {
+  cards: CardProp[]; // accepts an array of CardProps
+};
+
+const { cards } = Astro.props;
+---
+
+<div class="cards">
+  {/** Dynamically render multiple Card components */}
+  {cards.map((card) => <Card {...card} />)}
+</div>
+
+<style>
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Since this is standard CSS, we can have media queries here */
+  @media screen and (min-width: 768px) {
+    .cards {
+      flex-direction: row;
+    }
+  }
+</style>
